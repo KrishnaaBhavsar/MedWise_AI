@@ -87,12 +87,12 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <NavigationMenu>
+            <NavigationMenu className="max-w-full">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-foreground">Features</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    <div className="grid w-[250px] gap-3 p-4 md:w-[320px] md:grid-cols-2 lg:w-[400px]">
                       {features.map((feature) => (
                         <NavigationMenuLink key={feature.href} asChild>
                           <Link

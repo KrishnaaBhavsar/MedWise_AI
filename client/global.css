@@ -123,3 +123,11 @@
   }
 }
 
+/* Navigation Menu Overflow Fix */
+[data-radix-navigation-menu-content] {
+  max-width: calc(100vw - 2rem) !important;
+  left: auto !important;
+  right: 0 !important;
+  transform: none !important;
+}
+
