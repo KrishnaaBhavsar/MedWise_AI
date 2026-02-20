@@ -11,10 +11,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Stethoscope } from "lucide-react";
 
 export default function Login() {
-  const { user, loginWithEmail, register, isLoading } = useAuth();
+  const { user, loginWithEmail, register, guestLogin, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("signin");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form states
   const [email, setEmail] = useState("");
@@ -47,6 +48,11 @@ export default function Login() {
     } catch (error: any) {
       toast.error(error.message || "Registration failed");
     }
+  };
+
+  const handleGuestLogin = () => {
+    guestLogin();
+    toast.success("Welcome, Guest!");
   };
 
   if (isLoading) {
@@ -103,8 +109,8 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Signing In..." : "Sign In"}
+                <Button type="submit" className="w-full" disabled={isLoading || isSubmitting}>
+                  {isSubmitting ? "Signing In..." : "Sign In"}
                 </Button>
               </form>
             </TabsContent>
@@ -143,8 +149,8 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Creating Account..." : "Sign Up"}
+                <Button type="submit" className="w-full" disabled={isLoading || isSubmitting}>
+                  {isSubmitting ? "Creating Account..." : "Sign Up"}
                 </Button>
               </form>
             </TabsContent>
@@ -160,6 +166,24 @@ export default function Login() {
           </div>
 
           <LoginButton />
+          
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or</span>
+            </div>
+          </div>
+
+          <Button 
+            onClick={handleGuestLogin} 
+            variant="outline" 
+            className="w-full"
+            disabled={isLoading || isSubmitting}
+          >
+            Continue as Guest
+          </Button>
           
           <p className="text-xs text-center text-muted-foreground mt-4">
             By continuing, you agree to our Terms of Service and Privacy Policy.

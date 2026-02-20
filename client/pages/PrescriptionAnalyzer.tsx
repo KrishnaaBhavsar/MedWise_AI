@@ -120,7 +120,7 @@ export default function PrescriptionAnalyzer() {
           }
         ],
         summary: "We're experiencing technical difficulties with the analysis. Please try uploading your prescription again, or consult your healthcare provider for assistance.",
-        keyPoints: [
+        importantNotes: [
           "Take medications exactly as prescribed",
           "Contact your pharmacist if you have questions",
           "Keep all medical appointments"

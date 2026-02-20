@@ -5,6 +5,7 @@ interface User {
   email: string;
   name: string;
   picture?: string;
+  isGuest?: boolean;
 }
 
 interface AuthContextType {
@@ -13,6 +14,7 @@ interface AuthContextType {
   login: (credential: string, type?: 'id_token' | 'access_token') => Promise<void>;
   loginWithEmail: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  guestLogin: () => void;
   logout: () => void;
   isLoading: boolean;
 }
@@ -29,9 +31,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const savedToken = localStorage.getItem("auth_token");
     const savedUser = localStorage.getItem("auth_user");
 
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+    if (savedUser) {
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
+      if (savedToken) {
+        setToken(savedToken);
+      }
     }
     setIsLoading(false);
   }, []);
@@ -111,6 +116,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const guestLogin = () => {
+    const guestUser: User = {
+      id: "guest",
+      email: "",
+      name: "Guest User",
+      isGuest: true,
+    };
+    setUser(guestUser);
+    setToken(null); // No token for guest
+    localStorage.setItem("auth_user", JSON.stringify(guestUser));
+    localStorage.removeItem("auth_token");
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -119,7 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, loginWithEmail, register, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, token, login, loginWithEmail, register, guestLogin, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
